@@ -1,35 +1,70 @@
-import React, { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
+import React, { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 
-const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
+const ReactApexChart = dynamic(() => import("react-apexcharts"), {
+  ssr: false,
+});
 
 const Index = () => {
   const [state, setState] = useState({
     series: [
       {
-        name: 'Income',
-        type: 'column',
-        data: [11.4, 22, 28.5, 13.5, 29.5, 30.8, 39.8, 46.6],
+        name: "Phase I",
+        type: "column",
+        data: [],
       },
       {
-        name: 'Cashflow',
-        type: 'column',
-        data: [11.1, 32, 32.1, 46, 45.1, 41.9, 33.5, 29.5],
+        name: "Phase II",
+        type: "column",
+        data: [],
       },
       {
-        name: 'Revenue',
-        type: 'line',
-        data: [20, 29, 37, 36, 44, 45, 50, 58],
+        name: "Total",
+        type: "line",
+        data: [],
       },
     ],
     options: {
       chart: {
-        type: 'line',
+        type: "line",
         stacked: false,
+        height: 400, // Set an initial height
       },
-  
+      xaxis: {
+        categories: [],
+      },
     },
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:3002/get-count", {
+          method: "POST",
+        });
+        const data = await response.json();
+
+        setState((prev) => ({
+          ...prev,
+          series: [
+            { ...prev.series[0], data: data.phaseICounts },
+            { ...prev.series[1], data: data.phaseIICounts },
+            { ...prev.series[2], data: data.totalPhaseCounts },
+          ],
+          options: {
+            ...prev.options,
+            xaxis: {
+              categories: data.years,
+            },
+          },
+        }));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []); // Empty dependency array ensures the effect runs once after initial render
 
   useEffect(() => {
     const handleResize = () => {
@@ -40,27 +75,25 @@ const Index = () => {
           ...prev.options,
           chart: {
             ...prev.options.chart,
-            height: windowHeight - 200, 
+            height: windowHeight - 200,
           },
         },
       }));
     };
 
-    handleResize(); 
+    handleResize();
 
+    window.addEventListener("resize", handleResize);
 
-    window.addEventListener('resize', handleResize);
-
- 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
   return (
-    <div className='p-6 lg:p-12 container mx-auto'>
+    <div className="p-6 lg:p-12 container mx-auto">
       <div id="chart">
-        {typeof window !== 'undefined' && (
+        {typeof window !== "undefined" && (
           <ReactApexChart
             options={state.options}
             series={state.series}
