@@ -1,11 +1,10 @@
-
 import React from "react";
 
-function Card({ patentId, description, date }) {
+function Card({ patentId, description, date, phase }) {
   return (
     <div className="bg-white shadow-xl rounded-xl border border-blue-100 p-4 space-y-5 mb-5">
       <p className="bg-blue-100 px-3 py-2 rounded-3xl font-medium text-sm inline-flex">
-        {patentId}
+        {phase}
       </p>
       <h1 className="font-medium text-base text-black">
         PATENT ID: <span className="font-normal text-gray-500">{patentId}</span>
