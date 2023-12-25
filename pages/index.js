@@ -14,6 +14,56 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, [formData]);
+
+  useEffect(() => {
+    debouncedSearch();
+  }, [searchTerm]);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${API_URL}/patent`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          patent_id: text != "" ? text : formData.id,
+          phase: formData.phase,
+          patent_text: "",
+          date: formData.date,
+          offset: "",
+          limit: 10,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+
+      const result = await response.json();
+      setData(result); // Assuming the response is an array, adjust accordingly
+      //   console.log(
+      //     {
+      //       patent_id: text != "" ? text : formData.id,
+      //       phase: formData.phase,
+      //       patent_text: "",
+      //       date: formData.date,
+      //       offset: "",
+      //       limit: 10,
+      //     },
+      //     result
+      //   );
+      //setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      //setLoading(false);
+    }
+  };
+
   // Debounce function
   const debounce = (func, delay) => {
     let timeoutId;
@@ -50,86 +100,45 @@ export default function Home() {
       console.error("Error fetching data:", error);
     }
   }, 1000);
+  //   const handleSearch = async () => {
+  //     console.log("Searching...");
+  //     const response = await fetch(`${API_URL}/patent`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         patent_id: text != "" ? text : formData.id,
+  //         patent_id_arr: [text],
+  //         phase: formData.phase,
+  //         patent_text: "",
+  //         date: formData.date,
+  //         offset: "",
+  //         limit: 10,
+  //       }),
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error("Failed to fetch data");
+  //     }
+
+  //     const result = await response.json();
+  //     setData(result);
+  //     setSuggestions([]);
+  //     setSelectedIds([]);
+  //   };
   // Function to handle selecting an ID
-  const handleSelect = (id) => {
-    console.log(selectedIds);
-    setSelectedIds([...selectedIds, id]);
-  };
+  //   const handleSelect = (id) => {
+  //     console.log(selectedIds);
+  //     setSelectedIds([...selectedIds, id]);
+  //   };
 
   // Function to handle removing a selected ID
-  const handleRemove = (id) => {
-    const updatedIds = selectedIds.filter((selectedId) => selectedId !== id);
-    setSelectedIds(updatedIds);
-  };
+  //   const handleRemove = (id) => {
+  //     const updatedIds = selectedIds.filter((selectedId) => selectedId !== id);
+  //     setSelectedIds(updatedIds);
+  //   };
 
-  useEffect(() => {
-    fetchData();
-  }, [formData]);
-  const fetchData = async () => {
-    try {
-      const response = await fetch(`${API_URL}/patent`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          patent_id: formData.id,
-          phase: formData.phase,
-          patent_text: "",
-          date: formData.date,
-          offset: "",
-          limit: 10,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch data");
-      }
-
-      const result = await response.json();
-      setData(result); // Assuming the response is an array, adjust accordingly
-      //   console.log(
-      //     {
-      //       patent_id: formData.id,
-      //       phase: formData.phase,
-      //       patent_text: "",
-      //       date: formData.date,
-      //       offset: "",
-      //       limit: 10,
-      //     },
-      //     result
-      //   );
-      //setLoading(false);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      //setLoading(false);
-    }
-  };
-  const handleSearch = async () => {
-    console.log("Searching...");
-    const response = await fetch(`${API_URL}/patent`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        patent_id_arr: [text],
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch data");
-    }
-
-    const result = await response.json();
-    setData(result);
-    setSuggestions([]);
-    setSelectedIds([]);
-  };
-
-  useEffect(() => {
-    debouncedSearch();
-  }, [searchTerm]);
   return (
     <>
       <Loader />
@@ -144,7 +153,7 @@ export default function Home() {
               debouncedSearch(); // Trigger debounced search
             }}
             button={true}
-            onClick={handleSearch}
+            onClick={fetchData}
           />
           {/* Display suggestions */}
           <div>
