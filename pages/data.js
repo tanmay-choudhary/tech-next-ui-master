@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
-
+import { API_URL } from "@/constants";
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
@@ -39,7 +39,7 @@ const Index = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://65.1.3.130:3002/get-count", {
+        const response = await fetch(`${API_URL}/get-count`, {
           method: "POST",
         });
         const data = await response.json();
