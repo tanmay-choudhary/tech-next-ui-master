@@ -31,9 +31,9 @@ export default function Home() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          patent_id: text != "" ? text : formData.id,
+          patent_id: formData.id,
           phase: formData.phase,
-          patent_text: "",
+          patent_text: text,
           date: formData.date,
           offset: "",
           limit: 10,
@@ -50,7 +50,7 @@ export default function Home() {
       //     {
       //       patent_id: text != "" ? text : formData.id,
       //       phase: formData.phase,
-      //       patent_text: "",
+      //       patent_text: text,
       //       date: formData.date,
       //       offset: "",
       //       limit: 10,
@@ -145,7 +145,7 @@ export default function Home() {
       <div className="p-8 container mx-auto ">
         <div className="">
           <TextInput
-            placeholder="Search by patent ID"
+            placeholder="Search by Keywords : ex 'laser' "
             value={text}
             onChange={(e) => {
               setText(e.target.value);
