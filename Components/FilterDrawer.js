@@ -4,7 +4,11 @@ import DateInput from "./common/DateInput";
 import { useData } from "@/context/DataContext";
 import { X } from "lucide-react";
 
-const FilterDrawer = ({ handleClearFilter, handleApplyFilter }) => {
+const FilterDrawer = ({
+  setShowFilterDrawer,
+  handleClearFilter,
+  handleApplyFilter,
+}) => {
   const [phase, setPhase] = useState("");
   const [id, setId] = useState("");
   const [date, setDate] = useState("");
@@ -38,9 +42,13 @@ const FilterDrawer = ({ handleClearFilter, handleApplyFilter }) => {
     });
     handleClearFilter();
   }
+  async function close() {
+    console.log("Hi");
+    setShowFilterDrawer(false);
+  }
   return (
     <div className=" shadow-xl fixed right-0 top-0 h-[100vh] drawer  pt-28  space-y-12 pb-4 px-7 border rounded bg-white">
-      <button className="fixed right-10">
+      <button className="fixed right-10" onClick={close}>
         <X />
       </button>
       <div className="mb-4 mt-4">

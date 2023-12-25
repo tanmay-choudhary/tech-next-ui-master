@@ -193,6 +193,7 @@ export default function Home() {
           </button>
           {showFilterDrawer && (
             <FilterDrawer
+              setShowFilterDrawer={setShowFilterDrawer}
               handleClearFilter={() => setShowFilterDrawer(false)}
               handleApplyFilter={() => {
                 setShowFilterDrawer(false);
