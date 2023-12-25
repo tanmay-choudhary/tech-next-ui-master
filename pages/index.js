@@ -64,7 +64,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [formData]);
   const fetchData = async () => {
     try {
       const response = await fetch(`${API_URL}/patent`, {
