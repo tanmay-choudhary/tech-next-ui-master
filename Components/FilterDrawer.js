@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import TextInput from "./common/TextInput";
 import DateInput from "./common/DateInput";
 import { useData } from "@/context/DataContext";
+import { X } from "lucide-react";
 
 const FilterDrawer = ({ handleClearFilter, handleApplyFilter }) => {
   const [phase, setPhase] = useState("");
@@ -39,6 +40,9 @@ const FilterDrawer = ({ handleClearFilter, handleApplyFilter }) => {
   }
   return (
     <div className=" shadow-xl fixed right-0 top-0 h-[100vh] drawer  pt-28  space-y-12 pb-4 px-7 border rounded bg-white">
+      <button className="fixed right-10">
+        <X />
+      </button>
       <div className="mb-4 mt-4">
         <label className="block text-sm font-medium text-gray-700">Phase</label>
         <select

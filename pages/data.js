@@ -19,7 +19,7 @@ const Index = () => {
         data: [],
       },
       {
-        name: "Total",
+        name: "Total (Phase I+ Phase II)",
         type: "line",
         data: [],
       },
@@ -28,7 +28,7 @@ const Index = () => {
       chart: {
         type: "line",
         stacked: false,
-        height: 400, // Set an initial height
+        height: 400,
       },
       xaxis: {
         categories: [],
@@ -64,8 +64,7 @@ const Index = () => {
     };
 
     fetchData();
-  }, []); // Empty dependency array ensures the effect runs once after initial render
-
+  }, []);
   useEffect(() => {
     const handleResize = () => {
       const windowHeight = window.innerHeight;

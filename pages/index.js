@@ -202,15 +202,29 @@ export default function Home() {
           )}{" "}
         </div>
         <div className="mt-5">
-          {data.map((item, index) => (
-            <Card
-              key={index}
-              patentId={item.patent_id}
-              description={item.patent_text}
-              date={item.date}
-              phase={item.phase}
-            />
-          ))}
+          {data.length > 0 ? (
+            data.map((item, index) => (
+              <Card
+                key={index}
+                patentId={item.patent_id}
+                description={item.patent_text}
+                date={item.date}
+                phase={item.phase}
+                handleApplyFilter={() => {
+                  fetchData();
+                }}
+              />
+            ))
+          ) : (
+            <div className="flex items-center justify-center">
+              <img
+                src="/no-data.png"
+                alt="No Data Available"
+                width={600}
+                height={"auto"}
+              />
+            </div>
+          )}
         </div>
       </div>
     </>
