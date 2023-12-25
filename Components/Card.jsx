@@ -1,6 +1,8 @@
 import { Edit, Trash2, Trash2Icon } from "lucide-react";
 import { API_URL } from "@/constants";
 import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Card({ patentId, description, date, phase, handleApplyFilter }) {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -11,44 +13,71 @@ function Card({ patentId, description, date, phase, handleApplyFilter }) {
   const handleDeleteClick = () => {
     setDeleteModalOpen(true);
   };
-
   const handleDeleteConfirm = async () => {
-    const response = await fetch(`${API_URL}/delete-patent`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        patent_id: patentId,
-      }),
-    });
-    //console.log("ho");
-    handleApplyFilter();
-    setDeleteModalOpen(false);
-  };
+    try {
+      const response = await fetch(`${API_URL}/delete-patent`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          patent_id: patentId,
+        }),
+      });
 
+      if (!response.ok) {
+        throw new Error("Failed to delete data");
+      }
+
+      handleApplyFilter();
+      setDeleteModalOpen(false);
+
+      // Show success toast
+      toast.success(`PatentID : ${patentId} deleted successfully`);
+    } catch (error) {
+      console.error("Error deleting data:", error);
+      // Show error toast
+      toast.error("Error deleting patent");
+    }
+  };
   const handleDeleteCancel = () => {
     setDeleteModalOpen(false);
   };
 
   const handleEditClick = () => {
+    setEditedDescription(description); // Capture the current description
+    setEditedPhase(phase);
     setEditModalOpen(true);
   };
 
   const handleEditConfirm = async () => {
-    const response = await fetch(`${API_URL}/update-patent`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        patent_id: patentId,
-        phase: editedPhase,
-        patent_text: editedDescription,
-      }),
-    });
-    handleApplyFilter();
-    setEditModalOpen(false);
+    try {
+      const response = await fetch(`${API_URL}/update-patent`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          patent_id: patentId,
+          phase: editedPhase,
+          patent_text: editedDescription,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update data");
+      }
+
+      handleApplyFilter();
+      setEditModalOpen(false);
+
+      // Show success toast
+      toast.success(`PatentID : ${patentId} updated successfully`);
+    } catch (error) {
+      console.error("Error updating data:", error);
+      // Show error toast
+      toast.error("Error updating patent");
+    }
   };
 
   const handleEditCancel = () => {
@@ -57,6 +86,7 @@ function Card({ patentId, description, date, phase, handleApplyFilter }) {
 
   return (
     <>
+      <ToastContainer />
       <div className="bg-white shadow-xl rounded-xl border border-blue-100 p-4 space-y-5 mb-5">
         <div className="flex items-center justify-end">
           <button onClick={handleEditClick}>
