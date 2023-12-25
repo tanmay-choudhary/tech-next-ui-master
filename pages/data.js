@@ -43,7 +43,7 @@ const Index = () => {
           method: "POST",
         });
         const data = await response.json();
-
+        console.log("log data:", data);
         setState((prev) => ({
           ...prev,
           series: [
