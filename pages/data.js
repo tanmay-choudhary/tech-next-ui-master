@@ -39,7 +39,7 @@ const Index = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3002/get-count", {
+        const response = await fetch("http://65.1.3.130:3002/get-count", {
           method: "POST",
         });
         const data = await response.json();

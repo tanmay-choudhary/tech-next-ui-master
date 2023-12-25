@@ -4,7 +4,7 @@ import Loader from "@/Components/common/Loader";
 import TextInput from "@/Components/common/TextInput";
 import { useState, useEffect } from "react";
 import { useData } from "@/context/DataContext";
-
+import { API_URL } from "@/constants";
 export default function Home() {
   const [text, setText] = useState("");
   const [showFilterDrawer, setShowFilterDrawer] = useState(false);
@@ -29,7 +29,7 @@ export default function Home() {
 
   const debouncedSearch = debounce(async () => {
     try {
-      const response = await fetch("http://localhost:3001/get-ids", {
+      const response = await fetch(`${API_URL}/get-ids`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,7 +45,7 @@ export default function Home() {
 
       const result = await response.json();
       setSuggestions(result || []); // Update suggestions with the result
-      console.log("Searching...", searchTerm, result);
+      // console.log("Searching...", searchTerm, result);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -67,7 +67,7 @@ export default function Home() {
   }, []);
   const fetchData = async () => {
     try {
-      const response = await fetch("http://localhost:3001/patent", {
+      const response = await fetch(`${API_URL}/patent`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -107,7 +107,7 @@ export default function Home() {
   };
   const handleSearch = async () => {
     console.log("Searching...");
-    const response = await fetch("http://localhost:3001/patent", {
+    const response = await fetch(`${API_URL}/patent`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
