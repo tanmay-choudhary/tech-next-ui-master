@@ -113,7 +113,7 @@ export default function Home() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        patent_id_arr: selectedIds,
+        patent_id_arr: [text],
       }),
     });
 
@@ -148,7 +148,7 @@ export default function Home() {
           />
           {/* Display suggestions */}
           <div>
-            {suggestions?.map((suggestion, index) => (
+            {/**  {suggestions?.map((suggestion, index) => (
               <div key={index}>
                 <div key={index}>
                   <button onClick={() => handleSelect(suggestion)}>
@@ -172,7 +172,7 @@ export default function Home() {
                   </button>
                 </p>
               ))}
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="flex  items-center justify-center mt-5">

@@ -9,7 +9,7 @@ const FilterDrawer = ({ handleClearFilter, handleApplyFilter }) => {
   const [date, setDate] = useState("");
   const { state, dispatch } = useData();
   const formData = state.formData;
-  console.log(formData);
+  //console.log(formData);
   useEffect(() => {
     setPhase(formData.phase);
     setDate(formData.date);
@@ -25,6 +25,17 @@ const FilterDrawer = ({ handleClearFilter, handleApplyFilter }) => {
       },
     });
     handleApplyFilter();
+  }
+  async function handleClear() {
+    dispatch({
+      type: "SET_FORM_DATA",
+      payload: {
+        phase: "",
+        id: "",
+        date: "",
+      },
+    });
+    handleClearFilter();
   }
   return (
     <div className=" shadow-xl fixed right-0 top-0 h-[100vh] drawer  pt-28  space-y-12 pb-4 px-7 border rounded bg-white">
@@ -66,7 +77,7 @@ const FilterDrawer = ({ handleClearFilter, handleApplyFilter }) => {
       <div className="">
         <button
           className="bg-gray-300 text-gray-700 p-3 rounded hover:bg-gray-400 mr-2"
-          onClick={handleClearFilter}
+          onClick={handleClear}
         >
           Clear Filters
         </button>
